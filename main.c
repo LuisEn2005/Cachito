@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "cup.h"
+#include "scenes.h"
 
 cup playerCup;
 
@@ -11,23 +12,16 @@ int main(void) {
   SetTargetFPS(60);
 
   initCup(&playerCup);
-
-  char diceText[32];
-
+  InitScenes();
   while (!WindowShouldClose()) {
     BeginDrawing();
     ClearBackground(RAYWHITE);
+    UpdateScenes();
     if (IsKeyPressed(KEY_SPACE)) {
       rollCup(&playerCup);
-      diceText[0] = 0;
-
-      for (int i = 0; i < 5; i++) {
-        char temp[8];
-        sprintf(temp, "%d", playerCup.dice[i]);
-        strcat(diceText, temp);
-      }
     }
-    DrawText(diceText, 190, 200, 50, LIGHTGRAY);
+    DrawScenes();
+    // DrawText(diceText, 190, 200, 50, LIGHTGRAY);
     EndDrawing();
   }
 
