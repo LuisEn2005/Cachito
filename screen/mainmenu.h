@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "../../RaylibTools/raylibtools.h"
+#include "../RaylibTools/raylibtools.h"
 
 void InitMainMenu();
 int UpdateMainMenu();

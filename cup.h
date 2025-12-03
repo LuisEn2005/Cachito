@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "../RaylibTools/raylibtools.h"
+#include "./RaylibTools/raylibtools.h"
 
 typedef struct cup {
   int dice[5];
