@@ -1,15 +1,13 @@
 #include "mainmenu.h"
 
-Button TptButton;
 TextButton CreateJoinButton;
 TextButton OptionsButton;
 TextButton ExitGameButton;
 
 void InitMainMenu() {
-  makeButton(&TptButton, RectangleBounds(400, 300, 20, 20), GRAY);
-  TextButtonFromButton(&CreateJoinButton, &TptButton, makeText("Create/Join Game", 20, RED));
-  TextButtonFromButton(&OptionsButton, &TptButton, makeText("Options", 20, RED));
-  TextButtonFromButton(&ExitGameButton, &TptButton, makeText("Exit Game", 20, RED));
+  MakeTextButton(&CreateJoinButton, RectangleBounds(400, 300, 20, 20), makeText("Create/Join Game", 20, RED), GRAY);
+  MakeTextButton(&OptionsButton, RectangleBounds(400, 350, 20, 20), makeText("Options", 20, RED), GRAY);
+  MakeTextButton(&ExitGameButton, RectangleBounds(400, 400, 20, 20), makeText("Exit Game", 20, RED), GRAY);
 }
 
 int UpdateMainMenu() {
