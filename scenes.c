@@ -1,34 +1,14 @@
 #include "scenes.h"
 
-typedef enum {
-  MAINMENU = 0,
-  GAMEMENU,
-  OPTIONS,
-  EXIT,
-} GameScene;
-
-int currentScene = MAINMENU;
-
-void InitScenes() {
-  switch (currentScene) {
-    case MAINMENU:
-      InitMainMenu();
-      break;
-    case GAMEMENU:
-      break;
-    case OPTIONS:
-      break;
-    case EXIT:
-      break;
-  }
-}
+int MainScene = MAINMENU;
 
 void UpdateScenes() {
-  switch (currentScene) {
+  switch (MainScene) {
     case MAINMENU:
-      currentScene = UpdateMainMenu();
+      MainScene = UpdateMainMenu();
       break;
     case GAMEMENU:
+      MainScene = UpdateCreateJoin();
       break;
     case OPTIONS:
       break;
@@ -38,11 +18,12 @@ void UpdateScenes() {
 }
 
 void DrawScenes() {
-  switch (currentScene) {
+  switch (MainScene) {
     case MAINMENU:
       DrawMainMenu();
       break;
     case GAMEMENU:
+      DrawCreateJoin();
       break;
     case OPTIONS:
       break;

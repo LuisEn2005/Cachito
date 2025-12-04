@@ -1,24 +1,26 @@
 #include "mainmenu.h"
 
-TextButton CreateJoinButton;
-TextButton OptionsButton;
-TextButton ExitGameButton;
+static TextButton CreateJoinButton;
+static TextButton OptionsButton;
+static TextButton ExitGameButton;
+static bool initialized = false;
 
 void InitMainMenu() {
   MakeTextButton(&CreateJoinButton, RectangleBounds(400, 300, 20, 20), makeText("Create/Join Game", 20, RED), GRAY);
   MakeTextButton(&OptionsButton, RectangleBounds(400, 350, 20, 20), makeText("Options", 20, RED), GRAY);
   MakeTextButton(&ExitGameButton, RectangleBounds(400, 400, 20, 20), makeText("Exit Game", 20, RED), GRAY);
+  initialized = true;
 }
 
 int UpdateMainMenu() {
-  int option = 0;
+  if (!initialized) InitMainMenu();
   if (InputTextButton(&CreateJoinButton))
-    return option = 1;
+    return 1;
   else if (InputTextButton(&OptionsButton))
-    return option = 2;
+    return 2;
   else if (InputTextButton(&ExitGameButton))
-    return option = 3;
-  return option;
+    return 3;
+  return 0;
 }
 
 void DrawMainMenu() {

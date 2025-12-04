@@ -12,7 +12,6 @@ int main(void) {
   SetTargetFPS(60);
 
   initCup(&playerCup);
-  InitScenes();
   while (!WindowShouldClose()) {
     BeginDrawing();
     ClearBackground(RAYWHITE);
