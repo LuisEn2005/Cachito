@@ -12,7 +12,6 @@ typedef enum {
   EXIT,
 } Scenes;
 
-void InitScenes();
 void UpdateScenes();
 void DrawScenes();
 
