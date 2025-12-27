@@ -11,6 +11,7 @@ void UpdateScenes() {
       MainScene = UpdateCreateJoin();
       break;
     case OPTIONS:
+      MainScene = UpdateOptions();
       break;
     case EXIT:
       break;
@@ -26,6 +27,7 @@ void DrawScenes() {
       DrawCreateJoin();
       break;
     case OPTIONS:
+      DrawOptions();
       break;
     case EXIT:
       break;

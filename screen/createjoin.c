@@ -16,9 +16,7 @@ void InitCreateJoin() {
 }
 
 int CreateJoinOptions() {
-  if (InputTextButton(&JoinButton))
-    return 1;
-  else if (InputTextButton(&CreateButton))
+  if (InputTextButton(&JoinButton) || InputTextButton(&CreateButton))
     return 1;
   return 0;
 }

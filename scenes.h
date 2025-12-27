@@ -4,6 +4,7 @@
 #include "./RaylibTools/raylibtools.h"
 #include "screen/createjoin.h"
 #include "screen/mainmenu.h"
+#include "screen/options.h"
 
 typedef enum {
   MAINMENU = 0,
