@@ -13,11 +13,11 @@ enum { DEFAULT } skins;
 
 void initCup(cup* cupRef) {
   for (int i = 0; i < 5; i++) cupRef->dice[i] = 0;
-  rollCup(cupRef);
+  RollCup(cupRef);
   // cupRef->skin =;
 }
 
-void rollCup(cup* cupRef) {
+void RollCup(cup* cupRef) {
   rng_seed(&rng, time(NULL), (uint64_t)clock());
   for (int i = 0; i < 5; i++) {
     int result = rng_range(&rng, 1, 6);

@@ -1,6 +1,14 @@
 #include "scenes.h"
 
 int MainScene = MAINMENU;
+bool ExitGame = false;
+
+int InitScenes() {
+  InitMainMenu();
+  InitCreateJoin();
+  InitOptions();
+  return true;
+}
 
 void UpdateScenes() {
   switch (MainScene) {
@@ -14,6 +22,7 @@ void UpdateScenes() {
       MainScene = UpdateOptions();
       break;
     case EXIT:
+      ExitGame = true;
       break;
   }
 }
@@ -28,8 +37,6 @@ void DrawScenes() {
       break;
     case OPTIONS:
       DrawOptions();
-      break;
-    case EXIT:
       break;
   }
 }

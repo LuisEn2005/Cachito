@@ -4,10 +4,12 @@
 #include <stdio.h>
 
 #include "../RaylibTools/raylibtools.h"
+#include "gameplay.h"
 
 typedef enum {
   GAMEOPTIONS = 0,
   LOBBY,
+  GAMEPLAY,
 } GameMenuScenes;
 
 void InitCreateJoin();

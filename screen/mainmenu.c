@@ -3,17 +3,14 @@
 static TextButton CreateJoinButton;
 static TextButton OptionsButton;
 static TextButton ExitGameButton;
-static bool initialized = false;
 
 void InitMainMenu() {
   MakeTextButton(&CreateJoinButton, RectangleBounds(400, 300, 20, 20), makeText("Create/Join Game", 20, RED), GRAY);
   MakeTextButton(&OptionsButton, RectangleBounds(400, 350, 20, 20), makeText("Options", 20, RED), GRAY);
   MakeTextButton(&ExitGameButton, RectangleBounds(400, 400, 20, 20), makeText("Exit Game", 20, RED), GRAY);
-  initialized = true;
 }
 
 int UpdateMainMenu() {
-  if (!initialized) InitMainMenu();
   if (InputTextButton(&CreateJoinButton))
     return 1;
   else if (InputTextButton(&OptionsButton))

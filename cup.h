@@ -9,5 +9,5 @@ typedef struct cup {
   Texture2D skin;
 } cup;
 
-void initCup(cup*);
-void rollCup(cup*);
+void InitCup(cup*);
+void RollCup(cup*);
