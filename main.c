@@ -8,7 +8,7 @@ bool initialized = false;
 extern bool ExitGame;
 
 int main(void) {
-  InitWindow(800, 600, "Prueba Raylib");
+  InitWindow(800, 600, "Cachito");
   SetTargetFPS(60);
 
   while (!ExitGame && !WindowShouldClose()) {
@@ -17,7 +17,6 @@ int main(void) {
     ClearBackground(RAYWHITE);
     UpdateScenes();
     DrawScenes();
-    // DrawText(diceText, 190, 200, 50, LIGHTGRAY);
     EndDrawing();
   }
 

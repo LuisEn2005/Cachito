@@ -14,7 +14,7 @@ void InitCreateJoin() {
   MakeTextButton(&CreateButton, RectangleBounds(400, 350, 20, 20), makeText("Create Lobby", 20, RED), GRAY);
   MakeTextButton(&GoBackButton, RectangleBounds(400, 400, 20, 20), makeText("Go Back", 20, RED), GRAY);
   MakeTextButton(&CallaoButton, RectangleBounds(600, 300, 20, 20), makeText("Callao Simple", 20, RED), GRAY);
-  MakeTextButton(&StartButton, RectangleBounds(750, 50, 20, 20), makeText("Start Game", 20, RED), GRAY);
+  MakeTextButton(&StartButton, RectangleBounds(700, 50, 20, 20), makeText("Start Game", 20, RED), GRAY);
 }
 
 int CreateJoinOptions() {

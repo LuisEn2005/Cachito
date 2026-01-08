@@ -2,12 +2,12 @@
 
 static RNG rng;
 
-enum { ONE = 1,
-       TWO,
-       THREE,
-       FOUR,
-       FIVE,
-       SIX } dice;
+enum { AS = 1,
+       PATO,
+       TREN,
+       CUADRA,
+       CHINA,
+       ZAMBA } dice;
 
 enum { DEFAULT } skins;
 
