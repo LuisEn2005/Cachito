@@ -17,6 +17,11 @@ typedef struct {
 } game;
 
 typedef enum {
+  CUPSCENE = 0,
+  DICESCENE,
+} GameScenes;
+
+typedef enum {
   CALLAO = 0,
   DUDO,
   GAMECOUNT,

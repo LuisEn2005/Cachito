@@ -8,6 +8,7 @@ static TextButton StartButton;
 
 static int GameScene = GAMEOPTIONS;
 int GameMode = -1;
+static bool initialized = false;
 
 void InitCreateJoin() {
   MakeTextButton(&JoinButton, RectangleBounds(400, 300, 20, 20), makeText("Join Lobby", 20, RED), GRAY);
@@ -24,33 +25,54 @@ int CreateJoinOptions() {
 }
 
 int UpdateCreateJoin() {
-  if (CreateJoinOptions() == 1) GameScene = 1;
-  if (InputTextButton(&GoBackButton)) {
-    GameScene = GAMEOPTIONS;
-    return 0;
+  switch (GameScene) {
+    case GAMEOPTIONS:
+      if (CreateJoinOptions() == 1) GameScene = 1;
+      if (InputTextButton(&GoBackButton)) {
+        GameScene = GAMEOPTIONS;
+        return 0;
+      }
+      break;
+    case LOBBY:
+      if (InputTextButton(&GoBackButton)) {
+        GameScene = GAMEOPTIONS;
+        return 0;
+      }
+      if (InputTextButton(&CallaoButton)) GameMode = CALLAO;
+      if (InputTextButton(&StartButton)) {
+        if (GameMode >= 0 && GameMode <= GAMECOUNT)
+          GameScene = GAMEPLAY;
+        else {
+          DrawText("You must choose a game mode!", 400, 500, 40, RED);
+        }
+      }
+      break;
+    case GAMEPLAY:
+      if (initialized == false) {
+        InitGameplay();
+        initialized = true;
+      }
+      UpdateGameplay();
+      break;
   }
-  if (InputTextButton(&CallaoButton)) GameMode = CALLAO;
-  if (InputTextButton(&StartButton)) {
-    if (GameMode >= 0 && GameMode <= GAMECOUNT)
-      GameScene = GAMEPLAY;
-    else {
-      DrawText("You must choose a game mode!", 400, 500, 40, RED);
-    }
-  }
+
   return 1;
 }
 
 void DrawCreateJoin() {
   switch (GameScene) {
-    case 0:
+    case GAMEOPTIONS:
       DrawTextButton(&JoinButton);
       DrawTextButton(&GoBackButton);
       DrawTextButton(&CreateButton);
       break;
-    case 1:
+    case LOBBY:
       DrawTextButton(&StartButton);
       DrawTextButton(&CallaoButton);
       DrawTextButton(&GoBackButton);
+      break;
+    case GAMEPLAY:
+      DrawGameplay();
       break;
   }
 }
