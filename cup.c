@@ -1,7 +1,7 @@
 #include "cup.h"
 
 static RNG rng;
-
+static Color green = {34, 177, 76, 255};
 enum { DEFAULT } skins;
 
 void InitCup(cup* cupRef) {
@@ -20,17 +20,20 @@ void RollCup(cup* cupRef) {
 
 void SetDiceSprites(cup* cupRef) {
   for (int i = 0; i < 5; ++i) {
-    UnloadTexture(cupRef->diceSprites[i]);
+    if (cupRef->diceSprites[i].id > 0)
+      UnloadTexture(cupRef->diceSprites[i]);
   }
-  char source[32];
+
+  char source[64];
   Image img;
   Texture2D diceSprite;
   int numDice;
+
   for (int i = 0; i < 5; i++) {
     numDice = cupRef->dice[i];
     sprintf(source, "./assets/DiceSprites/dice_%d.png", numDice);
     img = LoadImage(source);
-    ImageColorReplace(&img, GREEN, BLANK);
+    ImageColorReplace(&img, green, BLANK);
     diceSprite = LoadTextureFromImage(img);
     cupRef->diceSprites[i] = diceSprite;
     UnloadImage(img);
@@ -39,8 +42,8 @@ void SetDiceSprites(cup* cupRef) {
 
 void ShowDices(cup* cupRef) {
   DrawTexture(cupRef->diceSprites[0], 50, 100, WHITE);
-  DrawTexture(cupRef->diceSprites[1], 350, 100, WHITE);
-  DrawTexture(cupRef->diceSprites[2], 650, 100, WHITE);
-  DrawTexture(cupRef->diceSprites[3], 300, 400, WHITE);
-  DrawTexture(cupRef->diceSprites[4], 600, 400, WHITE);
+  DrawTexture(cupRef->diceSprites[1], 275, 100, WHITE);
+  DrawTexture(cupRef->diceSprites[2], 500, 100, WHITE);
+  DrawTexture(cupRef->diceSprites[3], 200, 300, WHITE);
+  DrawTexture(cupRef->diceSprites[4], 425, 300, WHITE);
 }
