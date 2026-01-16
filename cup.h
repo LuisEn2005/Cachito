@@ -10,11 +10,15 @@ typedef enum { AS = 1,
                TREN,
                CUADRA,
                CHINA,
-               ZAMBA } dice;
+               ZAMBA } DiceValues;
+
+typedef struct dice {
+  int value;
+  Texture2D diceSprite;
+} dice;
 
 typedef struct cup {
-  int dice[5];
-  Texture2D diceSprites[5];
+  dice dices[5];
   Texture2D skin;
 } cup;
 
