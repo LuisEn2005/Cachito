@@ -13,8 +13,10 @@ typedef enum { AS = 1,
                ZAMBA } DiceValues;
 
 typedef struct dice {
+  Rectangle bounds;
   int value;
   Texture2D diceSprite;
+  bool isSelected;
 } dice;
 
 typedef struct cup {
