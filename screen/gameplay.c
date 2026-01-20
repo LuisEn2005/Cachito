@@ -20,6 +20,7 @@ void PlayCallao() {
       }
       break;
     case DICESCENE:
+      SelectDices(&playerCup);
       if (InputTextButton(&GoBacktoCupsceneButton)) {
         GameState = CUPSCENE;
       }

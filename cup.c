@@ -71,9 +71,18 @@ void SelectDices(cup* cupRef) {
 }
 
 void ShowDices(cup* cupRef) {
-  DrawTexture(cupRef->dices[0].diceSprite, 50, 100, WHITE);
-  DrawTexture(cupRef->dices[1].diceSprite, 275, 100, WHITE);
-  DrawTexture(cupRef->dices[2].diceSprite, 500, 100, WHITE);
-  DrawTexture(cupRef->dices[3].diceSprite, 200, 325, WHITE);
-  DrawTexture(cupRef->dices[4].diceSprite, 425, 325, WHITE);
+  DrawTexture(cupRef->dices[0].diceSprite, 50, 100, GRAY);
+  DrawTexture(cupRef->dices[1].diceSprite, 275, 100, GRAY);
+  DrawTexture(cupRef->dices[2].diceSprite, 500, 100, GRAY);
+  DrawTexture(cupRef->dices[3].diceSprite, 200, 325, GRAY);
+  DrawTexture(cupRef->dices[4].diceSprite, 425, 325, GRAY);
+  for (int i = 0; i < 5; i++) {
+    Color tint = cupRef->dices[i].isSelected ? WHITE : GRAY;
+
+    DrawTexture(cupRef->dices[i].diceSprite, cupRef->dices[i].bounds.x, cupRef->dices[i].bounds.y, tint);
+
+    if (cupRef->dices[i].isSelected) {
+      DrawRectangleLinesEx(cupRef->dices[i].bounds, 3, RED);
+    }
+  }
 }

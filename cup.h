@@ -28,3 +28,4 @@ void InitCup(cup*);
 void RollCup(cup*);
 void SetDiceSprites(cup*);
 void ShowDices(cup*);
+void SelectDices(cup*);
