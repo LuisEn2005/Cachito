@@ -19,13 +19,20 @@ typedef struct dice {
   bool isSelected;
 } dice;
 
+typedef struct {
+  int dices[5];
+} dicegroup;
+
 typedef struct cup {
   dice dices[5];
   Texture2D skin;
+  dicegroup groups[2];
+  Vector2 selected;
 } cup;
 
 void InitCup(cup*);
 void RollCup(cup*);
 void SetDiceSprites(cup*);
+void SaveDices(cup*);
 void ShowDices(cup*);
 void SelectDices(cup*);

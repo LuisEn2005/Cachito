@@ -7,6 +7,7 @@ static int GameState = -1;
 static TextButton ShowDicesButton;
 static TextButton GoBacktoCupsceneButton;
 cup playerCup;
+game currGame;
 
 void PlayCallao() {
   switch (GameState) {
@@ -42,7 +43,7 @@ void DrawCallao() {
 
 void InitGameplay() {
   MakeTextButton(&ShowDicesButton, RectangleBounds(400, 300, 20, 20), makeText("Show dices", 20, RED), GRAY);
-  MakeTextButton(&GoBacktoCupsceneButton, RectangleBounds(400, 300, 20, 20), makeText("Go Back", 20, RED), GRAY);
+  MakeTextButton(&GoBacktoCupsceneButton, RectangleBounds(500, 550, 20, 20), makeText("Throw Again", 20, RED), GRAY);
   InitCup(&playerCup);
   GameState = CUPSCENE;
 }

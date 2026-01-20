@@ -6,6 +6,7 @@ enum { DEFAULT } skins;
 
 void InitCup(cup* cupRef) {
   for (int i = 0; i < 5; i++) {
+    cupRef->groups[0].dices[i] = cupRef->groups[1].dices[i] = 0;
     cupRef->dices[i].value = 0;
     cupRef->dices[i].bounds.height = cupRef->dices[i].bounds.width = 200;
   }
@@ -29,8 +30,10 @@ void InitCup(cup* cupRef) {
 void RollCup(cup* cupRef) {
   rng_seed(&rng, time(NULL), (uint64_t)clock());
   for (int i = 0; i < 5; i++) {
-    int result = rng_range(&rng, 1, 6);
-    cupRef->dices[i].value = result;
+    if (!cupRef->dices[i].isSelected) {
+      int result = rng_range(&rng, 1, 6);
+      cupRef->dices[i].value = result;
+    }
   }
 }
 
@@ -62,12 +65,23 @@ void SelectDices(cup* cupRef) {
 
     for (int i = 0; i < 5; i++) {
       if (CheckCollisionPointRec(mousePoint, cupRef->dices[i].bounds)) {
-        cupRef->dices[i].isSelected = !cupRef->dices[i].isSelected;
+        int targetValue = cupRef->dices[i].value;
 
+        bool newState = !cupRef->dices[i].isSelected;
+
+        for (int j = 0; j < 5; j++) {
+          if (cupRef->dices[j].value == targetValue) {
+            cupRef->dices[j].isSelected = newState;
+          }
+        }
         break;
       }
     }
   }
+}
+
+void SaveDices(cup* cupRef) {
+  // We gotta save the 2 or 1 groups of selected dices on the Cup.
 }
 
 void ShowDices(cup* cupRef) {
