@@ -32,7 +32,9 @@ typedef struct cup {
 
 void InitCup(cup*);
 void RollCup(cup*);
+void GetValues(int*, cup*);
 void SetDiceSprites(cup*);
-void SaveDices(cup*);
+void SaveDices(int*, cup*);
+bool GroupsFull(cup*);
 void ShowDices(cup*);
-void SelectDices(cup*);
+void SelectDices(int*, cup*);

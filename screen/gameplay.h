@@ -16,6 +16,10 @@ typedef struct {
   PlayerScore higher;
 } game;
 
+typedef struct {
+  int listVal[5];
+} gameAux;
+
 typedef enum {
   CUPSCENE = 0,
   DICESCENE,
@@ -28,6 +32,7 @@ typedef enum {
 } GameplayModes;
 
 void InitGameplay();
+void GetDiceValues(int*, cup*);
 void UpdateGameplay();
 void DrawGameplay();
 

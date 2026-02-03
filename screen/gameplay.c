@@ -6,23 +6,33 @@ extern int GameMode;
 static int GameState = -1;
 static TextButton ShowDicesButton;
 static TextButton GoBacktoCupsceneButton;
+static TextButton NextPlayerButton;
 cup playerCup;
 game currGame;
+gameAux auxGame;
 
 void PlayCallao() {
+  static int turnsInGame = 0;
   switch (GameState) {
     case CUPSCENE:
-      if (InputTextButton(&ShowDicesButton)) {
-        SetDiceSprites(&playerCup);
-        GameState = DICESCENE;
-      }
       if (IsKeyPressed(KEY_SPACE)) {
         RollCup(&playerCup);
       }
+      if (InputTextButton(&ShowDicesButton)) {
+        GetValues(auxGame.listVal, &playerCup);
+        SetDiceSprites(&playerCup);
+        GameState = DICESCENE;
+      }
       break;
     case DICESCENE:
-      SelectDices(&playerCup);
+      SelectDices(auxGame.listVal, &playerCup);
       if (InputTextButton(&GoBacktoCupsceneButton)) {
+        // SaveDices(auxGame.listVal, &playerCup);
+        GameState = CUPSCENE;
+        turnsInGame += 1;
+      }
+      if (InputTextButton(&NextPlayerButton) || turnsInGame == 3 || GroupsFull(&playerCup)) {
+        currGame.turns = turnsInGame;
         GameState = CUPSCENE;
       }
       break;
@@ -44,9 +54,12 @@ void DrawCallao() {
 void InitGameplay() {
   MakeTextButton(&ShowDicesButton, RectangleBounds(400, 300, 20, 20), makeText("Show dices", 20, RED), GRAY);
   MakeTextButton(&GoBacktoCupsceneButton, RectangleBounds(500, 550, 20, 20), makeText("Throw Again", 20, RED), GRAY);
+  MakeTextButton(&NextPlayerButton, RectangleBounds(500, 550, 20, 40), makeText("Next Player", 20, RED), GRAY);
   InitCup(&playerCup);
+  currGame.turns = 0;
   GameState = CUPSCENE;
 }
+
 void UpdateGameplay() {
   switch (GameMode) {
     case CALLAO:
@@ -56,6 +69,7 @@ void UpdateGameplay() {
       break;
   }
 }
+
 void DrawGameplay() {
   switch (GameMode) {
     case CALLAO:
@@ -63,5 +77,53 @@ void DrawGameplay() {
       break;
     case DUDO:
       break;
+  }
+}
+
+void cleanListVal(int* listVal) {
+  for (int i = 0; i < 5; i++) listVal[i] = 0;
+}
+
+void showListVal(int* listVal) {
+  for (int i = 0; i < 5; i++) {
+    printf("%d", listVal[i]);
+  }
+}
+
+void GetValues(int* listVal, cup* cupRef) {
+  cleanListVal(listVal);
+
+  int repArr[6] = {0};
+  int diffDices = 0;
+
+  for (int i = 0; i < 5; i++) {
+    repArr[cupRef->dices[i].value - 1]++;
+  }
+
+  int j = 0, acc = 0;
+  for (int i = 0; i < 6; i++) {
+    if (repArr[i] != 0) {
+      listVal[j++] = i + 1;
+      diffDices++;
+      acc += repArr[i];
+    }
+
+    if (acc == 5) break;
+  }
+
+  int newList[5] = {0};
+
+  if (diffDices > 2) {
+    if (diffDices == 5) cleanListVal(listVal);
+    int k = 0;
+    for (int i = 0; i < 6; i++) {
+      if (repArr[i] != 1 && repArr[i] > 0) {
+        newList[k++] = i + 1;
+      }
+    }
+    cleanListVal(listVal);
+    for (int i = 0; i < 5; i++) {
+      listVal[i] = newList[i];
+    }
   }
 }

@@ -59,14 +59,21 @@ void SetDiceSprites(cup* cupRef) {
   }
 }
 
-void SelectDices(cup* cupRef) {
+bool isInListVal(int* listVal, int value) {
+  for (int i = 0; i < 5; i++) {
+    if (listVal[i] == value) return true;
+  }
+  return false;
+}
+
+void SelectDices(int* listVal, cup* cupRef) {
+  int targetValue;
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
     Vector2 mousePoint = GetMousePosition();
 
     for (int i = 0; i < 5; i++) {
-      if (CheckCollisionPointRec(mousePoint, cupRef->dices[i].bounds)) {
-        int targetValue = cupRef->dices[i].value;
-
+      targetValue = cupRef->dices[i].value;
+      if (CheckCollisionPointRec(mousePoint, cupRef->dices[i].bounds) && isInListVal(listVal, targetValue)) {
         bool newState = !cupRef->dices[i].isSelected;
 
         for (int j = 0; j < 5; j++) {
@@ -80,8 +87,55 @@ void SelectDices(cup* cupRef) {
   }
 }
 
-void SaveDices(cup* cupRef) {
-  // We gotta save the 2 or 1 groups of selected dices on the Cup.
+/*
+void SaveDices(int* listVal, cup* cupRef) {
+  int value1, value2;
+  value1 = value2 = 0;
+  for (int i = 0; i < 5; i++) {
+    if (cupRef->dices[i].isSelected) {
+      value1 = cupRef->dices[i].value;
+      for (int j = 0; j < 5; j++) {
+        if (cupRef->dices[j].isSelected && cupRef->dices[j].value != value1) {
+          value2 = cupRef->dices[j].value;
+          break;
+        }
+      }
+      break;
+    }
+  }
+  int j = 0, k = 0;
+  for (int i = 0; i < 5; i++) {
+    while (cupRef->groups[0].dices[j]) {
+      if (value1 == cupRef->dices[i].value) {
+        cupRef->groups[0].dices[j] = value1;
+      }
+      j++;
+    }
+    while (cupRef->groups[1].dices[k]) {
+      if (value2 == cupRef->dices[i].value) {
+        cupRef->groups[1].dices[k] = value2;
+      }
+      k++;
+    }
+  }
+
+  if (value1)
+    cupRef->selected.x = value1;
+  if (value2)
+    cupRef->selected.y = value2;
+}
+*/
+
+bool GroupsFull(cup* cupRef) {
+  int count = 0;
+  for (int i = 0; i < 5; i++) {
+    if (cupRef->groups[0].dices[i]) count++;
+  }
+  for (int i = 0; i < 5; i++) {
+    if (cupRef->groups[1].dices[i]) count++;
+  }
+  if (count == 5) return true;
+  return false;
 }
 
 void ShowDices(cup* cupRef) {
