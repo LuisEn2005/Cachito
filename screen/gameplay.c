@@ -52,9 +52,9 @@ void DrawCallao() {
 }
 
 void InitGameplay() {
-  MakeTextButton(&ShowDicesButton, RectangleBounds(400, 300, 20, 20), makeText("Show dices", 20, RED), GRAY);
-  MakeTextButton(&GoBacktoCupsceneButton, RectangleBounds(500, 550, 20, 20), makeText("Throw Again", 20, RED), GRAY);
-  MakeTextButton(&NextPlayerButton, RectangleBounds(500, 550, 20, 40), makeText("Next Player", 20, RED), GRAY);
+  MakeTextButton(&ShowDicesButton, RectangleBounds(400, 300, 20, 20), MakeText("Show dices", 20, RED), GRAY);
+  MakeTextButton(&GoBacktoCupsceneButton, RectangleBounds(500, 550, 20, 20), MakeText("Throw Again", 20, RED), GRAY);
+  MakeTextButton(&NextPlayerButton, RectangleBounds(500, 550, 20, 40), MakeText("Next Player", 20, RED), GRAY);
   InitCup(&playerCup);
   currGame.turns = 0;
   GameState = CUPSCENE;

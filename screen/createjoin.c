@@ -11,11 +11,11 @@ int GameMode = -1;
 static bool initialized = false;
 
 void InitCreateJoin() {
-  MakeTextButton(&JoinButton, RectangleBounds(400, 300, 20, 20), makeText("Join Lobby", 20, RED), GRAY);
-  MakeTextButton(&CreateButton, RectangleBounds(400, 350, 20, 20), makeText("Create Lobby", 20, RED), GRAY);
-  MakeTextButton(&GoBackButton, RectangleBounds(400, 400, 20, 20), makeText("Go Back", 20, RED), GRAY);
-  MakeTextButton(&CallaoButton, RectangleBounds(600, 300, 20, 20), makeText("Callao Simple", 20, RED), GRAY);
-  MakeTextButton(&StartButton, RectangleBounds(700, 50, 20, 20), makeText("Start Game", 20, RED), GRAY);
+  MakeTextButton(&JoinButton, RectangleBounds(400, 300, 20, 20), MakeText("Join Lobby", 20, RED), GRAY);
+  MakeTextButton(&CreateButton, RectangleBounds(400, 350, 20, 20), MakeText("Create Lobby", 20, RED), GRAY);
+  MakeTextButton(&GoBackButton, RectangleBounds(400, 400, 20, 20), MakeText("Go Back", 20, RED), GRAY);
+  MakeTextButton(&CallaoButton, RectangleBounds(600, 300, 20, 20), MakeText("Callao Simple", 20, RED), GRAY);
+  MakeTextButton(&StartButton, RectangleBounds(700, 50, 20, 20), MakeText("Start Game", 20, RED), GRAY);
 }
 
 int CreateJoinOptions() {

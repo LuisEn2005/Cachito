@@ -5,9 +5,9 @@ static TextButton OptionsButton;
 static TextButton ExitGameButton;
 
 void InitMainMenu() {
-  MakeTextButton(&CreateJoinButton, RectangleBounds(400, 300, 20, 20), makeText("Create/Join Game", 20, RED), GRAY);
-  MakeTextButton(&OptionsButton, RectangleBounds(400, 350, 20, 20), makeText("Options", 20, RED), GRAY);
-  MakeTextButton(&ExitGameButton, RectangleBounds(400, 400, 20, 20), makeText("Exit Game", 20, RED), GRAY);
+  MakeTextButton(&CreateJoinButton, RectangleBounds(400, 300, 20, 20), MakeText("Create/Join Game", 20, RED), GRAY);
+  MakeTextButton(&OptionsButton, RectangleBounds(400, 350, 20, 20), MakeText("Options", 20, RED), GRAY);
+  MakeTextButton(&ExitGameButton, RectangleBounds(400, 400, 20, 20), MakeText("Exit Game", 20, RED), GRAY);
 }
 
 int UpdateMainMenu() {
