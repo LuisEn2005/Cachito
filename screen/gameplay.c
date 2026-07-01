@@ -7,34 +7,36 @@ static int GameState = -1;
 static TextButton ShowDicesButton;
 static TextButton GoBacktoCupsceneButton;
 static TextButton NextPlayerButton;
-cup playerCup;
+cup playerCup; //Necesitamos recibir un "n" que represente la cantidad de jugadores (bots + 1 jugador)
 game currGame;
 gameAux auxGame;
 
 void PlayCallao() {
   static int turnsInGame = 0;
+  currGame.turns = MAXTURNS;
   switch (GameState) {
     case CUPSCENE:
       if (IsKeyPressed(KEY_SPACE)) {
         RollCup(&playerCup);
       }
-      if (InputTextButton(&ShowDicesButton)) {
-        GetValues(auxGame.listVal, &playerCup);
+      if (turnsInGame < currGame.turns && InputTextButton(&ShowDicesButton)) {
+        GetDiceValues(auxGame.listVal, &playerCup);
         SetDiceSprites(&playerCup);
         GameState = DICESCENE;
       }
       break;
     case DICESCENE:
-      SelectDices(auxGame.listVal, &playerCup);
+      SelectDices(auxGame.listVal, &playerCup); //cada que un Jugador termine, debemos de movernos al otro jugador y que juegue su turno
       if (InputTextButton(&GoBacktoCupsceneButton)) {
-        // SaveDices(auxGame.listVal, &playerCup);
         GameState = CUPSCENE;
         turnsInGame += 1;
       }
-      if (InputTextButton(&NextPlayerButton) || turnsInGame == 3 || GroupsFull(&playerCup)) {
+      if (InputTextButton(&NextPlayerButton) || turnsInGame >= currGame.turns || GroupsFull(&playerCup)) {
         currGame.turns = turnsInGame;
         GameState = CUPSCENE;
+        // SaveDices(auxGame.listVal, &playerCup);
       }
+
       break;
   }
 }
@@ -90,7 +92,7 @@ void showListVal(int* listVal) {
   }
 }
 
-void GetValues(int* listVal, cup* cupRef) {
+void GetDiceValues(int* listVal, cup* cupRef) {
   cleanListVal(listVal);
 
   int repArr[6] = {0};

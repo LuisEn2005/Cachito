@@ -1,5 +1,6 @@
 #ifndef GAMEPLAY_H
 #define GAMEPLAY_H
+#define MAXTURNS 3
 
 #include <stdio.h>
 
@@ -12,6 +13,7 @@ typedef struct {
 } PlayerScore;
 
 typedef struct {
+  int players;
   int turns;
   PlayerScore higher;
 } game;
