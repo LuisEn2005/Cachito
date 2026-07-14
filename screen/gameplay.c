@@ -32,7 +32,6 @@ void InitGameplay() {
 void PlayCallao() {
   switch (GameState) {
     case CUPSCENE:
-      printf("%d\n", currGame.turns);
       if (IsKeyPressed(KEY_SPACE)) {
         RollCup(&playerCup);
       }
