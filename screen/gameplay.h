@@ -13,6 +13,7 @@ typedef struct {
 } PlayerScore;
 
 typedef struct {
+  //Mejorar el administrador del juego para manejar mejor los cambios de jugadores y tenerlo mas ordenado
   int players;
   int turns;
   PlayerScore higher;

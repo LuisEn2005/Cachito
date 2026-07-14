@@ -77,7 +77,7 @@ void SelectDices(int* listVal, cup* cupRef) {
         bool newState = !cupRef->dices[i].isSelected;
 
         for (int j = 0; j < 5; j++) {
-          if (cupRef->dices[j].value == targetValue) {
+          if (cupRef->dices[j].isLocked == false && cupRef->dices[j].value == targetValue ) {
             cupRef->dices[j].isSelected = newState;
           }
         }

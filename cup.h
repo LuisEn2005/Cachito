@@ -17,6 +17,7 @@ typedef struct dice {
   int value;
   Texture2D diceSprite;
   bool isSelected;
+  bool isLocked;
 } dice;
 
 typedef struct {

@@ -2,20 +2,37 @@
 
 #include <assert.h>
 
+void SetLockOnDices(cup* cupRef){
+  for(int i = 0; i < 5; i++){
+    if(cupRef->dices[i].isSelected == true){
+      cupRef->dices[i].isLocked = true;
+    }
+  }
+}
+
 extern int GameMode;
 static int GameState = -1;
+static int turnsInGame = 0;
 static TextButton ShowDicesButton;
 static TextButton GoBacktoCupsceneButton;
 static TextButton NextPlayerButton;
-cup playerCup; //Necesitamos recibir un "n" que represente la cantidad de jugadores (bots + 1 jugador)
 game currGame;
 gameAux auxGame;
+cup playerCup;
+
+void InitGameplay() {
+  MakeTextButton(&ShowDicesButton, RectangleBounds(400, 300, 20, 20), MakeText("Show dices", 20, RED), GRAY);
+  MakeTextButton(&GoBacktoCupsceneButton, RectangleBounds(500, 550, 20, 20), MakeText("Throw Again", 20, RED), GRAY);
+  MakeTextButton(&NextPlayerButton, RectangleBounds(500, 550, 20, 40), MakeText("Next Player", 20, RED), GRAY);
+  currGame.turns = MAXTURNS;
+  InitCup(&playerCup);
+  GameState = CUPSCENE;
+}
 
 void PlayCallao() {
-  static int turnsInGame = 0;
-  currGame.turns = MAXTURNS;
   switch (GameState) {
     case CUPSCENE:
+      printf("%d\n", currGame.turns);
       if (IsKeyPressed(KEY_SPACE)) {
         RollCup(&playerCup);
       }
@@ -28,13 +45,14 @@ void PlayCallao() {
     case DICESCENE:
       SelectDices(auxGame.listVal, &playerCup); //cada que un Jugador termine, debemos de movernos al otro jugador y que juegue su turno
       if (InputTextButton(&GoBacktoCupsceneButton)) {
+        SetLockOnDices(&playerCup);
         GameState = CUPSCENE;
         turnsInGame += 1;
       }
-      if (InputTextButton(&NextPlayerButton) || turnsInGame >= currGame.turns || GroupsFull(&playerCup)) {
-        currGame.turns = turnsInGame;
+      if (InputTextButton(&NextPlayerButton) || GroupsFull(&playerCup)) {
+        if(turnsInGame >= currGame.turns) currGame.turns = turnsInGame;
         GameState = CUPSCENE;
-        // SaveDices(auxGame.listVal, &playerCup);
+        // SaveDices(auxGame.listVal, &playerCup[currPlayer]);
       }
 
       break;
@@ -48,19 +66,12 @@ void DrawCallao() {
       break;
     case DICESCENE:
       DrawTextButton(&GoBacktoCupsceneButton);
-      ShowDices(&playerCup);
+      ShowDices(&(playerCup));
       break;
   }
 }
 
-void InitGameplay() {
-  MakeTextButton(&ShowDicesButton, RectangleBounds(400, 300, 20, 20), MakeText("Show dices", 20, RED), GRAY);
-  MakeTextButton(&GoBacktoCupsceneButton, RectangleBounds(500, 550, 20, 20), MakeText("Throw Again", 20, RED), GRAY);
-  MakeTextButton(&NextPlayerButton, RectangleBounds(500, 550, 20, 40), MakeText("Next Player", 20, RED), GRAY);
-  InitCup(&playerCup);
-  currGame.turns = 0;
-  GameState = CUPSCENE;
-}
+
 
 void UpdateGameplay() {
   switch (GameMode) {
