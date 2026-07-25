@@ -6,7 +6,7 @@
 extern int GameMode;
 
 void InitGameplay() {
-  switch(GameMode){
+  switch (GameMode) {
     case CALLAO:
       InitCallao();
       break;

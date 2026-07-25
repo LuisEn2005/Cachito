@@ -11,7 +11,7 @@ cup playerCup;
 Game currGame;
 GameAux auxGame;
 
-void InitCallao(){
+void InitCallao() {
   MakeTextButton(&ShowDicesButton, RectangleBounds(400, 300, 20, 20), MakeText("Show dices", 20, RED), GRAY);
   MakeTextButton(&GoBacktoCupsceneButton, RectangleBounds(500, 550, 20, 20), MakeText("Throw Again", 20, RED), GRAY);
   MakeTextButton(&NextPlayerButton, RectangleBounds(500, 550, 20, 40), MakeText("Next Player", 20, RED), GRAY);
@@ -57,7 +57,7 @@ void DrawCallao() {
       break;
     case DICESCENE:
       DrawTextButton(&GoBacktoCupsceneButton);
-      ShowDices(&(playerCup));
+      ShowDices(&playerCup);
       break;
   }
 }
