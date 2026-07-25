@@ -1,3 +1,6 @@
+#ifndef CUP_H
+#define CUP_H
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,9 +36,12 @@ typedef struct cup {
 
 void InitCup(cup*);
 void RollCup(cup*);
-void GetValues(int*, cup*);
+void GetDiceValues(int*, cup*);
 void SetDiceSprites(cup*);
 void SaveDices(int*, cup*);
+void SetLockOnDices(cup*);
 bool GroupsFull(cup*);
 void ShowDices(cup*);
 void SelectDices(int*, cup*);
+
+#endif //CUP_H

@@ -4,6 +4,7 @@ LIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 TARGET = cachito
 OBJ = main.o scenes.o cup.o screen/createjoin.o screen/gameplay.o \
 			screen/mainmenu.o screen/options.o \
+			gamemodes/callao.o\
 			RaylibTools/utils/rng.o \
 			RaylibTools/utils/text.o \
 			RaylibTools/buttons/button.o \

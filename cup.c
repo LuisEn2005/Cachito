@@ -24,7 +24,6 @@ void InitCup(cup* cupRef) {
   cupRef->dices[4].bounds.y = 325;
 
   RollCup(cupRef);
-  // cupRef->skin =;
 }
 
 void RollCup(cup* cupRef) {
@@ -33,6 +32,54 @@ void RollCup(cup* cupRef) {
     if (!cupRef->dices[i].isSelected) {
       int result = rng_range(&rng, 1, 6);
       cupRef->dices[i].value = result;
+    }
+  }
+}
+
+void cleanListVal(int* dicesVal) {
+  for (int i = 0; i < 5; i++) dicesVal[i] = 0;
+}
+
+void showListVal(int* listVal) {
+  for (int i = 0; i < 5; i++) {
+    printf("%d", listVal[i]);
+  }
+}
+
+void GetDiceValues(int* dicesVal, cup* cupRef) {
+  cleanListVal(dicesVal);
+
+  int repArr[6] = {0};
+  int diffDices = 0;
+
+  for (int i = 0; i < 5; i++) {
+    repArr[cupRef->dices[i].value - 1]++;
+  }
+
+  int j = 0, acc = 0;
+  for (int i = 0; i < 6; i++) {
+    if (repArr[i] != 0) {
+      dicesVal[j++] = i + 1;
+      diffDices++;
+      acc += repArr[i];
+    }
+
+    if (acc == 5) break;
+  }
+
+  int newList[5] = {0};
+
+  if (diffDices > 2) {
+    if (diffDices == 5) cleanListVal(dicesVal);
+    int k = 0;
+    for (int i = 0; i < 6; i++) {
+      if (repArr[i] != 1 && repArr[i] > 0) {
+        newList[k++] = i + 1;
+      }
+    }
+    cleanListVal(dicesVal);
+    for (int i = 0; i < 5; i++) {
+      dicesVal[i] = newList[i];
     }
   }
 }
@@ -87,44 +134,13 @@ void SelectDices(int* listVal, cup* cupRef) {
   }
 }
 
-/*
-void SaveDices(int* listVal, cup* cupRef) {
-  int value1, value2;
-  value1 = value2 = 0;
-  for (int i = 0; i < 5; i++) {
-    if (cupRef->dices[i].isSelected) {
-      value1 = cupRef->dices[i].value;
-      for (int j = 0; j < 5; j++) {
-        if (cupRef->dices[j].isSelected && cupRef->dices[j].value != value1) {
-          value2 = cupRef->dices[j].value;
-          break;
-        }
-      }
-      break;
+void SetLockOnDices(cup* cupRef){
+  for(int i = 0; i < 5; i++){
+    if(cupRef->dices[i].isSelected == true){
+      cupRef->dices[i].isLocked = true;
     }
   }
-  int j = 0, k = 0;
-  for (int i = 0; i < 5; i++) {
-    while (cupRef->groups[0].dices[j]) {
-      if (value1 == cupRef->dices[i].value) {
-        cupRef->groups[0].dices[j] = value1;
-      }
-      j++;
-    }
-    while (cupRef->groups[1].dices[k]) {
-      if (value2 == cupRef->dices[i].value) {
-        cupRef->groups[1].dices[k] = value2;
-      }
-      k++;
-    }
-  }
-
-  if (value1)
-    cupRef->selected.x = value1;
-  if (value2)
-    cupRef->selected.y = value2;
 }
-*/
 
 bool GroupsFull(cup* cupRef) {
   int count = 0;
