@@ -40,18 +40,17 @@ int UpdateCreateJoin() {
       }
       if (InputTextButton(&CallaoButton)) GameMode = CALLAO;
       if (InputTextButton(&StartButton)) {
-        if (GameMode >= 0 && GameMode <= GAMECOUNT)
+        if (GameMode >= 0 && GameMode < GAMECOUNT){
+          InitGameplay((GameplayModes) GameMode);
+          initialized = true;
           GameScene = GAMEPLAY;
+        }
         else {
           DrawText("You must choose a game mode!", 400, 500, 40, RED);
         }
       }
       break;
     case GAMEPLAY:
-      if (initialized == false) {
-        InitGameplay();
-        initialized = true;
-      }
       UpdateGameplay();
       break;
   }

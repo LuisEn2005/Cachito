@@ -12,7 +12,13 @@ typedef enum {
   GAMECOUNT,
 } GameplayModes;
 
-void InitGameplay();
+typedef struct {
+  void (*Init)(void);
+  void (*Update)(void);
+  void (*Draw)(void);
+} GamemodeHandlers;
+
+void InitGameplay(GameplayModes mode);
 void UpdateGameplay();
 void DrawGameplay();
 

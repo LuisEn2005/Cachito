@@ -3,36 +3,36 @@
 
 #include <assert.h>
 
-extern int GameMode;
+static GamemodeHandlers currentGamemode;
 
-void InitGameplay() {
-  switch (GameMode) {
+void InitGameplay(GameplayModes mode) {
+  switch (mode) {
     case CALLAO:
-      InitCallao();
+      currentGamemode.Init = InitCallao;
+      currentGamemode.Update = UpdateCallao;
+      currentGamemode.Draw = DrawCallao;
       break;
     case DUDO:
       break;
+    default:
+      assert(0 && "Gamemode no valido");
+  }
+  
+  if (currentGamemode.Init){
+    currentGamemode.Init();
   }
 }
 
 
 void UpdateGameplay() {
-  switch (GameMode) {
-    case CALLAO:
-      UpdateCallao();
-      break;
-    case DUDO:
-      break;
+  if (currentGamemode.Update){
+    currentGamemode.Update();
   }
 }
 
 void DrawGameplay() {
-  switch (GameMode) {
-    case CALLAO:
-      DrawCallao();
-      break;
-    case DUDO:
-      break;
+  if (currentGamemode.Draw){
+    currentGamemode.Draw();
   }
 }
 
