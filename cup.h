@@ -31,17 +31,18 @@ typedef struct cup {
   dice dices[5];
   Texture2D skin;
   dicegroup groups[2];
-  Vector2 selected;
+  int selectableVals[5];
+  int looseVals[2];
 } cup;
 
 void InitCup(cup*);
 void RollCup(cup*);
-void GetDiceValues(int*, cup*);
-void SetDiceSprites(cup*);
-void SaveDices(int*, cup*);
+void ComputeSelectable(cup*, bool allowLooseGroup);
+void SelectDices(cup*);
 void SetLockOnDices(cup*);
+bool AllDicesLocked(cup*);
 bool GroupsFull(cup*);
+void SetDiceSprites(cup*);
 void ShowDices(cup*);
-void SelectDices(int*, cup*);
 
 #endif //CUP_H

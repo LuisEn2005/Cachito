@@ -29,58 +29,60 @@ void InitCup(cup* cupRef) {
 void RollCup(cup* cupRef) {
   rng_seed(&rng, time(NULL), (uint64_t)clock());
   for (int i = 0; i < 5; i++) {
-    if (!cupRef->dices[i].isSelected) {
+    if (!cupRef->dices[i].isLocked && !cupRef->dices[i].isSelected) {
       int result = rng_range(&rng, 1, 6);
       cupRef->dices[i].value = result;
     }
   }
 }
 
-void cleanListVal(int* dicesVal) {
-  for (int i = 0; i < 5; i++) dicesVal[i] = 0;
+bool isInListVal(int* listVal, int count, int value) {
+  for (int i = 0; i < 5; i++) {
+    if (listVal[i] == value) return true;
+  }
+  return false;
 }
 
-void showListVal(int* listVal) {
-  for (int i = 0; i < 5; i++) {
-    printf("%d", listVal[i]);
+void ComputeSelectable(cup* cupRef, bool allowLooseGroup) {
+  int repArr[7] = {0};
+  for (int i = 0; i < 5; i++) repArr[cupRef->dices[i].value]++;
+
+  int faces[6], counts[6], n = 0;
+  for (int face = 1; face <= 6; face++) {
+    if (repArr[face] > 0) { faces[n] = face; counts[n] = repArr[face]; n++; }
   }
-}
-
-void GetDiceValues(int* dicesVal, cup* cupRef) {
-  cleanListVal(dicesVal);
-
-  int repArr[6] = {0};
-  int diffDices = 0;
-
-  for (int i = 0; i < 5; i++) {
-    repArr[cupRef->dices[i].value - 1]++;
-  }
-
-  int j = 0, acc = 0;
-  for (int i = 0; i < 6; i++) {
-    if (repArr[i] != 0) {
-      dicesVal[j++] = i + 1;
-      diffDices++;
-      acc += repArr[i];
+  for (int i = 1; i < n; i++) {
+    int cf = faces[i], cc = counts[i], j = i - 1;
+    while (j >= 0 && counts[j] < cc) {
+      faces[j + 1] = faces[j]; counts[j + 1] = counts[j]; j--;
     }
-
-    if (acc == 5) break;
+    faces[j + 1] = cf; counts[j + 1] = cc;
   }
 
-  int newList[5] = {0};
+  cupRef->selectableVals[0] = cupRef->selectableVals[1] = cupRef->selectableVals[2] =
+      cupRef->selectableVals[3] = cupRef->selectableVals[4] = 0;
+  cupRef->looseVals[0] = cupRef->looseVals[1] = 0;
 
-  if (diffDices > 2) {
-    if (diffDices == 5) cleanListVal(dicesVal);
-    int k = 0;
-    for (int i = 0; i < 6; i++) {
-      if (repArr[i] != 1 && repArr[i] > 0) {
-        newList[k++] = i + 1;
-      }
+  if (n == 1 && counts[0] == 5) {
+    cupRef->selectableVals[0] = faces[0];
+  } else if (n == 2 && counts[0] == 4 && counts[1] == 1) {
+    cupRef->selectableVals[0] = faces[0]; // Excepción 1: automática, sin clic en el suelto
+  } else if (n == 2 && counts[0] == 3 && counts[1] == 2) {
+    cupRef->selectableVals[0] = faces[0];
+    cupRef->selectableVals[1] = faces[1];
+  } else if (n == 3 && counts[0] == 3 && counts[1] == 1 && counts[2] == 1) {
+    cupRef->selectableVals[0] = faces[0]; // el trío siempre se puede bloquear
+    if (allowLooseGroup) {
+      cupRef->looseVals[0] = faces[1];
+      cupRef->looseVals[1] = faces[2];
     }
-    cleanListVal(dicesVal);
-    for (int i = 0; i < 5; i++) {
-      dicesVal[i] = newList[i];
-    }
+    // si NO es último turno: los sueltos quedan sin exponer, y por lo tanto sin poder
+    // clickearse: el jugador solo puede lockear el trío y volver a tirar los otros 2
+  } else if (n == 3 && counts[0] == 2 && counts[1] == 2 && counts[2] == 1) {
+    cupRef->selectableVals[0] = faces[0];
+    cupRef->selectableVals[1] = faces[1];
+  } else if (n == 4 && counts[0] == 2) {
+    cupRef->selectableVals[0] = faces[0];
   }
 }
 
@@ -93,10 +95,9 @@ void SetDiceSprites(cup* cupRef) {
   char source[64];
   Image img;
   Texture2D diceSprite;
-  int numDice;
 
   for (int i = 0; i < 5; i++) {
-    numDice = cupRef->dices[i].value;
+    int numDice = cupRef->dices[i].value;
     sprintf(source, "./assets/DiceSprites/dice_%d.png", numDice);
     img = LoadImage(source);
     ImageColorReplace(&img, green, BLANK);
@@ -106,25 +107,19 @@ void SetDiceSprites(cup* cupRef) {
   }
 }
 
-bool isInListVal(int* listVal, int value) {
-  for (int i = 0; i < 5; i++) {
-    if (listVal[i] == value) return true;
-  }
-  return false;
-}
-
-void SelectDices(int* listVal, cup* cupRef) {
-  int targetValue;
+void SelectDices(cup* cupRef) {
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
     Vector2 mousePoint = GetMousePosition();
 
     for (int i = 0; i < 5; i++) {
-      targetValue = cupRef->dices[i].value;
-      if (CheckCollisionPointRec(mousePoint, cupRef->dices[i].bounds) && isInListVal(listVal, targetValue)) {
+      int targetValue = cupRef->dices[i].value;
+      bool isSelectable = isInListVal(cupRef->selectableVals, 5, targetValue) ||
+                          isInListVal(cupRef->looseVals, 2, targetValue);
+      if (CheckCollisionPointRec(mousePoint, cupRef->dices[i].bounds) && isSelectable) {
         bool newState = !cupRef->dices[i].isSelected;
 
         for (int j = 0; j < 5; j++) {
-          if (cupRef->dices[j].isLocked == false && cupRef->dices[j].value == targetValue ) {
+          if (cupRef->dices[j].isLocked == false && cupRef->dices[j].value == targetValue) {
             cupRef->dices[j].isSelected = newState;
           }
         }
@@ -136,30 +131,30 @@ void SelectDices(int* listVal, cup* cupRef) {
 
 void SetLockOnDices(cup* cupRef){
   for(int i = 0; i < 5; i++){
-    if(cupRef->dices[i].isSelected == true){
+    if(cupRef->dices[i].isSelected){
       cupRef->dices[i].isLocked = true;
     }
   }
+}
+
+bool AllDicesLocked(cup* cupRef) {
+  for (int i = 0; i < 5; i++) {
+    if (!cupRef->dices[i].isLocked) return false;
+  }
+  return true;
 }
 
 bool GroupsFull(cup* cupRef) {
   int count = 0;
   for (int i = 0; i < 5; i++) {
     if (cupRef->groups[0].dices[i]) count++;
-  }
-  for (int i = 0; i < 5; i++) {
     if (cupRef->groups[1].dices[i]) count++;
   }
-  if (count == 5) return true;
-  return false;
+
+  return (count == 5);
 }
 
 void ShowDices(cup* cupRef) {
-  DrawTexture(cupRef->dices[0].diceSprite, 50, 100, GRAY);
-  DrawTexture(cupRef->dices[1].diceSprite, 275, 100, GRAY);
-  DrawTexture(cupRef->dices[2].diceSprite, 500, 100, GRAY);
-  DrawTexture(cupRef->dices[3].diceSprite, 200, 325, GRAY);
-  DrawTexture(cupRef->dices[4].diceSprite, 425, 325, GRAY);
   for (int i = 0; i < 5; i++) {
     Color tint = cupRef->dices[i].isSelected ? WHITE : GRAY;
 
